@@ -87,6 +87,8 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script type="text/javascript">
+			var c = $('.chat');
+			c.scrollTop(c.prop("scrollHeight"));
 			var socket = io();
 			var cid = makeid();
 			function makeid()
@@ -114,16 +116,22 @@
 				function send() {
 					
 		    		socket.emit('chat message',{msg: $("#input").val(),room: cid});
-		    		
+		    		$('.chat').append('<li class="left clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="UserAvatar" class="img-circle"></span><div class="chat-body clearfix"><div class="header"><small class="pull-right text-muted"><span class="glyphicon glyphicon-time">13 mins ago</span></small><strong class="primary-font">You</strong></div><p>'+$("#input").val()+'</p></div></li>');
+		    		$("#input").val('');
+		    		var c = $('.panel-body');
+			c.scrollTop(c.prop("scrollHeight"));
 				}
 				
 				socket.on('chat message', function(msg){
 	    			// console.log();
-alert(msg);
+
 	      			// $('#messages').append($('<li>').text(msg));
 	      			// $("#response").text(msg['result']['fulfillment']['speech']);
-					$('.chat').append('<liclass="rightclearfix"><spanclass="chat-imgpull-right"><imgsrc="http://placehold.it/50/FA6F57/fff&amp;text=ME"alt="UserAvatar"class="img-circle"></span><divclass="chat-bodyclearfix"><divclass="header"><smallclass="text-muted"><spanclass="glyphiconglyphicon-time"></span></small><strongclass="pull-rightprimary-font">ChatBot</strong></div><p>'+msg['result']['fulfillment']['speech']+'</p></div></li>');	
+					
+					$('.chat').append('<li class="right clearfix"><span class="chat-img pull-right"><img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="UserAvatar" class="img-circle"></span><div class="chat-body clearfix"><div class="header"><small class="text-muted"><span class="glyphicon glyphicon-time"></span></small><strong class="pull-right primary-font">ChatBot</strong></div><p>'+msg['result']['fulfillment']['speech']+'</p></div></li>');	
 					// $("#response").text(msg);
+					var c = $('.panel-body');
+			c.scrollTop(c.prop("scrollHeight"));
 	    		});			
 			});
 
