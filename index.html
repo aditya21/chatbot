@@ -1,75 +1,132 @@
+<!DOCTYPE html>
 <html>
-<head>
-	<title>API Example</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	 <script src="/socket.io/socket.io.js"></script>
-	<script type="text/javascript">
-		var socket = io();
-		var accessToken = "1aec78ac1070408ba8372dad604f6d96";
-		var subscriptionKey = "956e29bab2a0480d92aead486ed61391";
-		var baseUrl = "https://api.api.ai/v1/";
-		$(document).ready(function() {
+	<head>
+		<title></title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="http://localhost/chatbot/style.css">
+		<script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<span class="glyphicon glyphicon-comment"></span> Chat
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+								<span class="glyphicon glyphicon-chevron-down"></span>
+								</button>
+								<ul class="dropdown-menu slidedown">
+									<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-refresh">
+										</span>Refresh</a>
+									</li>
+									<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-ok-sign">
+										</span>Available</a>
+									</li>
+									<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-remove">
+										</span>Busy</a>
+									</li>
+									<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-time"></span>
+										Away</a>
+									</li>
+									<li class="divider"></li>
+									<li><a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-off"></span>
+										Sign Out</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="panel-body">
+							<ul class="chat">
+								<li class="left clearfix">
+									<span class="chat-img pull-left">
+									<img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="img-circle">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+											<span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+											dolor, quis ullamcorper ligula sodales.
+										</p>
+									</div>
+								</li>
+								<li class="right clearfix">
+									<span class="chat-img pull-right">
+									<img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="img-circle">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<small class=" text-muted"><span class="glyphicon glyphicon-time"></span>13 mins ago</small>
+											<strong class="pull-right primary-font">Bhaumik Patel</strong>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+											dolor, quis ullamcorper ligula sodales.
+										</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="panel-footer">
+							<div class="input-group">
+								<input id="input" type="text" class="form-control input-sm" placeholder="Type your message here...">
+								<span class="input-group-btn">
+								<button class="btn btn-warning btn-sm" id="btn-chat">
+								Send</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			var socket = io();
+			var cid = makeid();
+			function makeid()
+			{
+			    var text = "";
+			    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+			    for( var i=0; i < 5; i++ )
+			        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+			    return text;
+			}
+			socket.emit('subscribe', cid);
+
 			
-			$("#input").keypress(function(event) {
-				if (event.which == 13) {
-					event.preventDefault();
-					send();
+			$(document).ready(function() {
+				
+				$("#input").keypress(function(event) {
+				
+					if (event.which == 13) {
+						event.preventDefault();
+						send();
+					}
+				});
+				function send() {
+					
+		    		socket.emit('chat message',{msg: $("#input").val(),room: cid});
+		    		
 				}
+				
+				socket.on('chat message', function(msg){
+	    			// console.log();
+alert(msg);
+	      			// $('#messages').append($('<li>').text(msg));
+	      			// $("#response").text(msg['result']['fulfillment']['speech']);
+					$('.chat').append('<liclass="rightclearfix"><spanclass="chat-imgpull-right"><imgsrc="http://placehold.it/50/FA6F57/fff&amp;text=ME"alt="UserAvatar"class="img-circle"></span><divclass="chat-bodyclearfix"><divclass="header"><smallclass="text-muted"><spanclass="glyphiconglyphicon-time"></span></small><strongclass="pull-rightprimary-font">ChatBot</strong></div><p>'+msg['result']['fulfillment']['speech']+'</p></div></li>');	
+					// $("#response").text(msg);
+	    		});			
 			});
 
-		});
-
-		function send() {
-	
-    		socket.emit('chat message', $("#input").val());
-    		socket.on('chat message', function(msg){
-    			// console.log();
-
-      			// $('#messages').append($('<li>').text(msg));
-      			$("#response").text(msg['result']['fulfillment']['speech']);
-				// $("#response").text(msg);
-    		});
-			// $("#response").text(json['result']['speech']);
-			// var text = $("#input").val();
-			// $.ajax({
-			// 	type: "POST",
-			// 	url: baseUrl + "query/",
-			// 	contentType: "application/json; charset=utf-8",
-			// 	dataType: "json",
-			// 	headers: {
-			// 		"Authorization": "Bearer " + accessToken,
-			// 		"ocp-apim-subscription-key": subscriptionKey
-			// 	},
-			// 	data: JSON.stringify({ q: text, lang: "en" ,sessionId:"1234567890"}),
-			// 	success: function(data) {
-			// 		setResponse(JSON.stringify(data, undefined, 2));
-			// 	},
-			// 	error: function() {
-			// 		setResponse("Internal Server Error");
-			// 	}
-			// });
-			// setResponse("Loading...");
-		}
-		function setResponse(val) {
-			var json = JSON.parse(val); 
-			
-			$("#response").text(json['result']['speech']);
-			// $("#response").text(val);
-		}
-	</script>
-	<style type="text/css">
-		body { width: 500px; margin: 0 auto; text-align: center; margin-top: 20px; }
-		div {  position: absolute; }
-		input { width: 400px; }
-		button { width: 50px; }
-		textarea { width: 100%; }
-	</style>
-</head>
-<body>
-	<div>
-		<input id="input" type="text"> <button id="rec">Speak</button>
-		<br>Response<br> <textarea id="response" cols="40" rows="20"></textarea>
-	</div>
-</body>
+		</script>
+	</body>
 </html>

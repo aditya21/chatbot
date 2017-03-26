@@ -1,11 +1,13 @@
 //links
 //http://eloquentjavascript.net/09_regexp.html
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+var socket = io();
 nlp = window.nlp_compromise;
 
 var messages = [], //array that hold the record of each string in chat
   lastUserMessage = "", //keeps track of the most recent input string from the user
   botMessage = "", //var keeps track of what the chatbot is going to say
+  // botM = "",
   botName = 'Chatbot', //name of the chatbot
   talking = true; //when false the speach function doesn't work
 //
@@ -20,26 +22,37 @@ var messages = [], //array that hold the record of each string in chat
 //edit this function to change what the chatbot says
 function chatbotResponse() {
   talking = true;
-  botMessage = "I'm confused"; //the default message
+  botM = "";
+  socket.emit('chat message', lastUserMessage);
+  socket.on('chat message', function(msg){
+            // console.log();
 
-  if (lastUserMessage === 'hi') {
-    botMessage = 'Howdy!';
-  }
+     // $('#messages').append($('<li>').text(msg));
+    lastUserMessage = msg['result']['fulfillment']['speech'];
+    messages.push("<b>" + botName + ":</b> " + lastUserMessage);
+    alert(messages);
+    for (var i = 1; i < 8; i++) {
+      if (messages[messages.length - i])
+        document.getElementById("chatlog" + i).innerHTML = messages[messages.length - i];
+    }
+          // $("#response").text(msg);
+  });
+  // messages.push("<b>" + botName + ":</b> " + botM);
+  // return botM;
 
-  if (lastUserMessage === 'name') {
-    botMessage = 'My name is ' + botName;
-  }
+  // botMessage = "I'm confused"; //the default message
+
+  // if (lastUserMessage === 'hi') {
+  //   botMessage = 'Howdy!';
+  // }
+
+  // if (lastUserMessage === 'name') {
+  //   botMessage = 'My name is ' + botName;
+  // }
+
+
 }
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//
-//
-//
+
 //this runs each time enter is pressed.
 //It controls the overall input and output
 function newEntry() {
@@ -50,19 +63,16 @@ function newEntry() {
     //sets the chat box to be clear
     document.getElementById("chatbox").value = "";
     //adds the value of the chatbox to the array messages
-    messages.push(lastUserMessage);
-    //Speech(lastUserMessage);  //says what the user typed outloud
+    // messages.push(lastUserMessage);
+    Speech(lastUserMessage);  //says what the user typed outloud
     //sets the variable botMessage in response to lastUserMessage
     chatbotResponse();
     //add the chatbot's name and message to the array messages
-    messages.push("<b>" + botName + ":</b> " + botMessage);
+    
     // says the message using the text to speech function written below
     Speech(botMessage);
     //outputs the last few array elements of messages to html
-    for (var i = 1; i < 8; i++) {
-      if (messages[messages.length - i])
-        document.getElementById("chatlog" + i).innerHTML = messages[messages.length - i];
-    }
+
   }
 }
 
@@ -88,14 +98,11 @@ document.onkeypress = keyPress;
 function keyPress(e) {
   var x = e || window.event;
   var key = (x.keyCode || x.which);
-  if (key == 13 || key == 3) {
+  if (key == 13) {
     //runs this function when enter is pressed
     newEntry();
   }
-  if (key == 38) {
-    console.log('hi')
-      //document.getElementById("chatbox").value = lastUserMessage;
-  }
+
 }
 
 //clears the placeholder text ion the chatbox
