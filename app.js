@@ -21,7 +21,7 @@ io.on('connection', function(socket){
       console.log('chat message');
       var apiai = require('apiai');
 
-      var appAI = apiai("1aec78ac1070408ba8372dad604f6d96");
+      var appAI = apiai("b54ddfe592ea48a584487f6c0c59d234");
 
       var request = appAI.textRequest(data.msg, {
           sessionId: '1234567890'
