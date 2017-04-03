@@ -119,7 +119,8 @@
 		    		$('.chat').append('<li class="left clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="UserAvatar" class="img-circle"></span><div class="chat-body clearfix"><div class="header"><small class="pull-right text-muted"><span class="glyphicon glyphicon-time">13 mins ago</span></small><strong class="primary-font">You</strong></div><p>'+$("#input").val()+'</p></div></li>');
 		    		$("#input").val('');
 		    		var c = $('.panel-body');
-			c.scrollTop(c.prop("scrollHeight"));
+					c.scrollTop(c.prop("scrollHeight"));
+					
 				}
 				
 				socket.on('chat message', function(msg){
