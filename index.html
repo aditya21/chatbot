@@ -10,11 +10,11 @@
 
 
 	<style type="text/css">
-		 .panel-body ul li{list-style-type:none!important;}
+		 .panel-body ul li{list-style-type:none!important;font-size: 13px; }
 	</style>
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4 slide" style="position: fixed; bottom: -300px;left: 0; "> 
+				<div class="col-md-3 slide" style="position: fixed; bottom: -300px;left: 0; "> 
 
 					<div class="panel panel-primary">
 						<div class="panel-heading">
@@ -30,12 +30,12 @@
 
 							<ul class="chat">
 								<li class="right clearfix">
-									<span class="chat-img pull-right">
+									<!-- <span class="chat-img pull-right">
 									<img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="img-circle">
-									</span>
+									</span> -->
 									<div class="chat-body clearfix">
 										<div class="header">
-											<small class=" text-muted"><span class="glyphicon glyphicon-time"></span></small>
+											<small class=" text-muted">&nbsp;</small>
 											<strong class="pull-right primary-font">Chatbot</strong>
 										</div>
 										<p>
@@ -79,7 +79,14 @@
 
 			
 			$(document).ready(function() {
-$('.slide').animate({'bottom': '0'}, 1000);				
+			$('.panel-heading').click(function(){
+   
+    			$('.panel-body').slideToggle();
+    		$('.panel-footer').slideToggle();
+			});
+
+
+			$('.slide').animate({'bottom': '0'}, 1000);				
 				$("#input").keypress(function(event) {
 				
 					if (event.which == 13) {
@@ -90,7 +97,7 @@ $('.slide').animate({'bottom': '0'}, 1000);
 				function send() {
 					
 		    		socket.emit('chat message',{msg: $("#input").val(),room: cid});
-		    		$('.chat').append('<li class="left clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="UserAvatar" class="img-circle"></span><div class="chat-body clearfix"><div class="header"><small class="pull-right text-muted"><span class="glyphicon glyphicon-time">13 mins ago</span></small><strong class="primary-font">You</strong></div><p>'+$("#input").val()+'</p></div></li>');
+		    		$('.chat').append('<li class="left clearfix"><div class="chat-body clearfix"><div class="header"><strong class="primary-font">You</strong></div><p>'+$("#input").val()+'</p></div></li>');
 		    		$("#input").val('');
 		    		var c = $('.panel-body');
 					c.scrollTop(c.prop("scrollHeight"));
@@ -103,7 +110,7 @@ $('.slide').animate({'bottom': '0'}, 1000);
 	      			// $('#messages').append($('<li>').text(msg));
 	      			// $("#response").text(msg['result']['fulfillment']['speech']);
 					
-					$('.chat').append('<li class="right clearfix"><span class="chat-img pull-right"><img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="UserAvatar" class="img-circle"></span><div class="chat-body clearfix"><div class="header"><small class="text-muted"><span class="glyphicon glyphicon-time"></span></small><strong class="pull-right primary-font">ChatBot</strong></div><p>'+msg['result']['fulfillment']['speech']+'</p></div></li>');	
+					$('.chat').append('<li class="right clearfix"><div class="chat-body clearfix"><div class="header"><small class=" text-muted">&nbsp;</small><strong class="pull-right primary-font">ChatBot</strong></div><p>'+msg['result']['fulfillment']['speech']+'</p></div></li>');	
 					// $("#response").text(msg);
 					var c = $('.panel-body');
 			c.scrollTop(c.prop("scrollHeight"));
