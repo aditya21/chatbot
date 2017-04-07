@@ -4,11 +4,11 @@
 		<title></title>
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="http://localhost/chatbot/style.css">
-		<script src="/socket.io/socket.io.js"></script>
+		<script src="socket.io.js"></script>
 	</head>
 	<body>
 
-<<<<<<< HEAD
+
 	<style type="text/css">
 		 .panel-body ul li{list-style-type:none!important;}
 	</style>
@@ -63,7 +63,7 @@
 		<script type="text/javascript">
 			var c = $('.chat');
 			c.scrollTop(c.prop("scrollHeight"));
-			var socket = io();
+			var socket = io('http://chatbot.adityaharshey.com:3000');
 			var cid = makeid();
 			function makeid()
 			{
